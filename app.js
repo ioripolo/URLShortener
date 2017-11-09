@@ -30,9 +30,6 @@ app.get("/", function(req, res) {
   });
 });
 
-console.log(process.env.MONGODB_URI);
-console.log(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs");
-
 mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", function(err, db) {
   if (err) {
     throw new Error('Database failed to connect!');
@@ -40,16 +37,13 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
     console.log('Successfully connected to MongoDB');
   }
   
-  
-  
-  app.get('/:url', function(req, res) {
+  app.route('/:url*').get(function(req, res) {
     if (req.params.url == 'favicon.ico') return;
     var url ='https://urlshortener-ioripolo.herokuapp.com/' + req.params.url;
     db.collection('URLs').findOne({
       "short_url" : url
-    }), function(err, result) {
+    }, function(err, result) {
       if (err) throw err;
-      console.log('find!!!!!!!!!!!!!!!!!');
       if (result) {
         console.log('Found ' + JSON.stringify(result));
         console.log('Redirecting to: ' + result.original_url);
@@ -57,7 +51,7 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
       } else {
          res.send({"error": "This url is not on the database."});
       }
-    };
+    });
   });
   
   app.get('/new/*', function(req, res) {
