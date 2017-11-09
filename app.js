@@ -30,6 +30,7 @@ app.get("/", function(req, res) {
   });
 });
 
+console.log(process.env.MONGODB_URI);
 console.log(process.env.MONGOLAB_URI);
 
 mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost:27017/shortURLs", function(err, db) {
