@@ -30,12 +30,16 @@ app.get("/", function(req, res) {
   });
 });
 
+console.log(process.env.MONGOLAB_URI);
+
 mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost:27017/shortURLs", function(err, db) {
   if (err) {
     throw new Error('Database failed to connect!');
   } else {
     console.log('Successfully connected to MongoDB');
   }
+  
+  
   
   app.get('/:url', function(req, res) {
     var url ='https://urlshortener-ioripolo.herokuapp.com/' + req.params.url;
