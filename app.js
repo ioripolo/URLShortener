@@ -37,7 +37,7 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
     console.log('Successfully connected to MongoDB');
   }
   
-  app.route('/:url*').get(function(req, res) {
+  app.route('/:url').get(function(req, res) {
     if (req.params.url == 'favicon.ico') return;
     var url ='https://urlshortener-ioripolo.herokuapp.com/' + req.params.url;
     db.collection('URLs').findOne({
