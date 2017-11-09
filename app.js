@@ -43,8 +43,8 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
   
   
   app.get('/:url', function(req, res) {
+    if (req.params.url == 'favicon.ico') return;
     var url ='https://urlshortener-ioripolo.herokuapp.com/' + req.params.url;
-    console.log(url);
     db.collection('URLs').findOne({
       "short_url" : url
     }), function(err, result) {
