@@ -30,7 +30,7 @@ app.get("/", function(req, res) {
   });
 });
 
-mongo.connect("mongodb://localhost:27017/shortURLs", function(err, db) {
+mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost:27017/shortURLs", function(err, db) {
   if (err) {
     throw new Error('Database failed to connect!');
   } else {
