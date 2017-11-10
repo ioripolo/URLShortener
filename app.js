@@ -16,16 +16,16 @@ app.get("/", function(req, res) {
       2: '如果用户输入前边生成的短地址，则会重定向到相应的合法地址。'
     },
     usage: {
-      0: process.env.APP_URL + 'new/http://www.baidu.com',
-      1: process.env.APP_URL + 'new/http://www.youku.com',
-      2: process.env.APP_URL + 'new/http://www.google.com',
+      0: process.env.APP_URL + '/new/http://www.baidu.com',
+      1: process.env.APP_URL + '/new/http://www.youku.com',
+      2: process.env.APP_URL + '/new/http://www.google.com',
       3: process.env.APP_URL + '/4192'
     },
     result: {
-      0: '{"original_url":"http://www.baidu.com/", "short_url":"' + process.env.APP_URL + '4192"}',
-      1: '{"original_url":"http://www.youku.com/", "short_url":"' + process.env.APP_URL + '6828"}',
-      2: '{"original_url":"http://www.google.com/", "short_url":"' + process.env.APP_URL + '5706"}',
-      3: 'redirect to http://www.baidu.com/'
+      0: '{"original_url":"http://www.baidu.com", "short_url":"' + process.env.APP_URL + '/4192"}',
+      1: '{"original_url":"http://www.youku.com", "short_url":"' + process.env.APP_URL + '/6828"}',
+      2: '{"original_url":"http://www.google.com", "short_url":"' + process.env.APP_URL + '/5706"}',
+      3: 'redirect to http://www.baidu.com'
     }
   });
 });
@@ -39,7 +39,8 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
   
   app.route('/:url').get(function(req, res) {
     if (req.params.url == 'favicon.ico') return;
-    var url = process.env.APP_URL + req.params.url;
+    var url = process.env.APP_URL + '/' + req.params.url;
+    console.log(url);
     db.collection('URLs').findOne({
       "short_url" : url
     }, function(err, result) {
@@ -80,7 +81,7 @@ mongo.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/shortURLs", 
           do {
             // Generates random four digit number for link
             var num = Math.floor(100000 + Math.random() * 900000);
-            newLink = process.env.APP_URL + num.toString().substring(0, 4);
+            newLink = process.env.APP_URL + '/' + num.toString().substring(0, 4);
           } while(urlList.indexOf(newLink) != -1);
           
           var doc = {
